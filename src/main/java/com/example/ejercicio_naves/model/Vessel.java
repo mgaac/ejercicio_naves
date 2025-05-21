@@ -56,11 +56,11 @@ public class Vessel {
     private ShippingLine ownerLine;
 
     @OneToMany(mappedBy = "vessel", fetch = FetchType.LAZY)
-    private List<Announcement> announcements;
+    private List<Anunav> announcements;
 
     public Vessel() {}
 
-    public Vessel(BigDecimal id, String description, Integer vesselType, String flagCountry, BigDecimal grossTonnage, BigDecimal netTonnage, BigDecimal length, BigDecimal beam, BigDecimal draft, Boolean active, Timestamp createdAt, String createdBy, Timestamp updatedAt, String updatedBy, ShippingLine ownerLine, List<Announcement> announcements) {
+    public Vessel(BigDecimal id, String description, Integer vesselType, String flagCountry, BigDecimal grossTonnage, BigDecimal netTonnage, BigDecimal length, BigDecimal beam, BigDecimal draft, Boolean active, Timestamp createdAt, String createdBy, Timestamp updatedAt, String updatedBy, ShippingLine ownerLine, List<Anunav> announcements) {
         this.id = id;
         this.description = description;
         this.vesselType = vesselType;
@@ -109,6 +109,6 @@ public class Vessel {
     public void setUpdatedBy(String updatedBy) { this.updatedBy = updatedBy; }
     public ShippingLine getOwnerLine() { return ownerLine; }
     public void setOwnerLine(ShippingLine ownerLine) { this.ownerLine = ownerLine; }
-    public List<Announcement> getAnnouncements() { return announcements; }
-    public void setAnnouncements(List<Announcement> announcements) { this.announcements = announcements; }
+    public List<Anunav> getAnnouncements() { return announcements; }
+    public void setAnnouncements(List<Anunav> announcements) { this.announcements = announcements; }
 } 
