@@ -1,4 +1,4 @@
-package com.example.ejercicio_naves;
+package com.example.ejercicio_naves.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -7,6 +7,10 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "DFLINEAS")
 public class Lineas {
+    
+    public Lineas() {
+    }
+
     @Id
     @Column(name = "LINEA", length = 4)
     private String linea;
@@ -65,5 +69,4 @@ public class Lineas {
     @Column(name = "LIN_PORCENTAJE_TOLERANCIA_VGM")
     private BigDecimal linPorcentajeToleranciaVgm;
 
-    // Getters and setters omitted for brevity
 } 

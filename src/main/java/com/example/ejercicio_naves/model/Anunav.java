@@ -1,4 +1,4 @@
-package com.example.ejercicio_naves;
+package com.example.ejercicio_naves.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -7,6 +7,10 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "DFANUNAV")
 public class Anunav {
+    
+    public Anunav() {
+    }
+
     @Id
     @Column(name = "UVI", length = 5)
     private String uvi;

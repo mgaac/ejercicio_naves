@@ -1,18 +1,16 @@
-package com.example.ejercicio_naves;
+package com.example.ejercicio_naves.model;
 
-import java.util.Objects;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "DFNAVES")
 public class Naves {
+
+    public Naves() {
+    }
+
     @Id
     @Column(name = "NAVE", precision = 4)
     private BigDecimal nave;
@@ -55,7 +53,7 @@ public class Naves {
 
     @Column(name = "CAPTESU", precision = 4)
     private BigDecimal captesu;
-x
+
     @Column(name = "CAPPASAJ", precision = 4)
     private BigDecimal cappasaj;
 
@@ -91,6 +89,4 @@ x
 
     @Column(name = "NOMCORTO", length = 20)
     private String nomcorto;
-
-    // Getters and setters omitted for brevity
 }
