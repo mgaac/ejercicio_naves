@@ -1,26 +1,83 @@
 package com.example.ejercicio_naves.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 
-import com.example.ejercicio_naves.model.Anunav;
-import com.example.ejercicio_naves.repository.AnunavRepository;
+import com.example.ejercicio_naves.model.DfAnunav;
+import com.example.ejercicio_naves.repository.DfAnunavRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AnunavService {
 
-    private AnunavRepository anunavRepository; 
+    private final DfAnunavRepository anunavRepository;
 
-    @Autowired
-    public AnunavService(AnunavRepository anunavRepository) {
-        this.anunavRepository = anunavRepository;
+    public List<DfAnunav> navesAtracarHoy() {
+        LocalDateTime inicioDelDia = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime finDelDia = inicioDelDia.plusDays(1).minusNanos(1);
+        return anunavRepository.findNavesAtracadasRango(inicioDelDia, finDelDia);
     }
 
-    public List<Anunav> findAll() {
-        return anunavRepository.findAll();
+    public List<DfAnunav> navesAtracarSemana() {
+        LocalDateTime inicioDeSemana = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime finDeSemana= inicioDeSemana.plusDays(7).minusNanos(1);
+        return anunavRepository.findNavesAtracadasRango(inicioDeSemana, finDeSemana);
+    }
+
+    public List<DfAnunav> navesAtracarRango(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        return anunavRepository.findNavesAtracadasRango(fechaInicio, fechaFin);
+    }
+
+    public List<DfAnunav> navesZarparHoy() {
+        LocalDateTime inicioDelDia = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime finDelDia = inicioDelDia.plusDays(1).minusNanos(1);
+        return anunavRepository.findNavesZarpadas(inicioDelDia, finDelDia);
+    }
+
+    public List<DfAnunav> navesZarparSemana() {
+        LocalDateTime inicioDeSemana = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime finDeSemana = inicioDeSemana.plusDays(7).minusNanos(1);
+        return anunavRepository.findNavesZarpadas(inicioDeSemana, finDeSemana);
+    }
+
+    public List<DfAnunav> navesZarparRango(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        return anunavRepository.findNavesZarpadas(fechaInicio, fechaFin);
+    }
+
+    public boolean reportarZarpe(String uvi, LocalDateTime fechaZarpe) {
+        var optionalAnunav = anunavRepository.findById(uvi);
+        if (anunavRepository.isBuqueAbierto(uvi) && 
+            optionalAnunav.isPresent()) {
+    
+            DfAnunav anunav = optionalAnunav.get();
+    
+            if (anunav.getFecha().isBefore(fechaZarpe) && 
+                anunav.getFecZarpe() == null) {
+    
+                anunavRepository.notifyZarpeNave(uvi, fechaZarpe);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean reportarArribo(String uvi, LocalDateTime fechaArribo) {
+        var optionalAnunav = anunavRepository.findById(uvi);
+        if (optionalAnunav.isEmpty() || !anunavRepository.isBuqueAbierto(uvi)) {
+            return false;
+        }
+    
+        DfAnunav anunav = optionalAnunav.get();
+        if (anunav.getFecAtraq() == null) {
+            anunavRepository.notifyArriboNave(uvi, fechaArribo);
+            return true;
+        }
+    
+        return false;
     }
 }

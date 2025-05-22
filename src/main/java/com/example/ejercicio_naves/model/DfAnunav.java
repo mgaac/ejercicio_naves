@@ -1,0 +1,205 @@
+package com.example.ejercicio_naves.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "DFANUNAV")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class DfAnunav {
+
+    @Id
+    @Column(name = "UVI", length = 5)
+    private String uvi;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "NAVE")
+    private DfNave nave;
+
+    @Column(name = "VIAJES", precision = 4)
+    private Integer viajes;
+
+    @Column(name = "ETA")
+    private LocalDateTime eta;
+
+    @Column(name = "ETD")
+    private LocalDateTime etd;
+
+    @Column(name = "FECATRAQ")
+    private LocalDateTime fecAtraq;
+
+    @Column(name = "FECZARPE")
+    private LocalDateTime fecZarpe;
+
+    @Column(name = "NAVIERO", precision = 10)
+    private BigDecimal naviero;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "LINEA")
+    private DfLinea linea;
+
+    @Column(name = "POOL", length = 4)
+    private String pool;
+
+    @Column(name = "TPONAVE")
+    private BigDecimal tpoNave;
+
+    @Column(name = "RUTAM", length = 4)
+    private String rutaMar;
+
+    @Column(name = "PTOANTER", length = 5)
+    private String ptoAnter;
+
+    @Column(name = "PTOSIGUI", length = 5)
+    private String ptoSigui;
+
+    @Column(name = "VIAJEENT", length = 20)
+    private String viajeEnt;
+
+    @Column(name = "VIAJESAL", length = 20)
+    private String viajeSal;
+
+    @Column(name = "CONFEREN", length = 15)
+    private String conferen;
+
+    @Column(name = "ESTANUN", length = 1)
+    private String estAnun;
+
+    @Column(name = "ESTMAR")
+    private BigDecimal estMar;
+
+    @Column(name = "NUMPAS", precision = 4)
+    private Integer numPas;
+    
+    @Column(name = "INDESTADIS", length = 1)
+    private String indEstadis;
+    
+    @Column(name = "INDDEPOSIT", length = 1)
+    private String indDeposit;
+    
+    @Column(name = "TPOMUELLAJ")
+    private BigDecimal tpoMuellaj;
+    
+    @Column(name = "ESTOPER", length = 1)
+    private String estoper;
+    
+    @Column(name = "FECCIERRE")
+    private LocalDateTime fecCierre;
+    
+    @Column(name = "INDCIEAD", length = 1)
+    private String indCiead;
+    
+    @Column(name = "REGCAP", length = 32)
+    private String regCap;
+    
+    @Column(name = "FECREGCAP")
+    private LocalDateTime fecRegCap;
+    
+    @Column(name = "FECCEADU")
+    private LocalDateTime fecCeadu;
+    
+    @Column(name = "TPOTRAFI")
+    private BigDecimal tpoTrafi;
+    
+    @Column(name = "INDDESCAR", length = 1)
+    private String indDescar;
+    
+    @Column(name = "INDCARGUE", length = 1)
+    private String indCargue;
+    
+    @Column(name = "INDTRANSB", length = 1)
+    private String indTransb;
+    
+    @Column(name = "CALADPROA", precision = 10, scale = 2)
+    private BigDecimal caladProa;
+    
+    @Column(name = "CALADPOPA", precision = 10, scale = 2)
+    private BigDecimal caladPopa;
+    
+    @Column(name = "SITSOL", length = 3)
+    private String sitSol;
+    
+    @Column(name = "SITASG", length = 3)
+    private String sitAsg;
+    
+    @Column(name = "SITACT", length = 3)
+    private String sitAct;
+    
+    @Column(name = "MODATRSOL", precision = 4)
+    private BigDecimal modAtrSol;
+    
+    @Column(name = "MODATRASG", precision = 4)
+    private BigDecimal modAtrAsg;
+    
+    @Column(name = "INDCARGOS", length = 1)
+    private String indCargos;
+    
+    @Column(name = "INDFACTURA", length = 1)
+    private String indFactura;
+    
+    @Column(name = "CBF")
+    private LocalDateTime cbf;
+    
+    @Column(name = "LCO")
+    private LocalDateTime lco;
+    
+    @Column(name = "CCO")
+    private LocalDateTime cco;
+
+    @Column(name = "FECCREA")
+    private LocalDateTime fecCrea;
+
+    @Column(name = "USRCREA", length = 10)
+    private String usrCrea;
+
+    @Column(name = "FECHA")
+    private LocalDateTime fecha;
+
+    @Column(name = "USUARIO", length = 10)
+    private String usuario;
+
+    @Column(name = "ACTIVO", length = 1)
+    private String activo;
+
+    @Lob
+    @Column(name = "OBSERVA", length = 2048)
+    private String observa;
+    
+    @Column(name = "AN_ENVIO_BAPLIE_ATRAQUE", length = 1)
+    private String anEnvioBaplieAtraque;
+    
+    @Column(name = "AN_ENVIO_BAPLIE_ZARPE", length = 1)
+    private String anEnvioBaplieZarpe;
+    
+    @Column(name = "AN_FECHA_ENVIO_BAPLIE_ATRAQUE")
+    private LocalDateTime anFechaEnvioBaplieAtraque;
+    
+    @Column(name = "AN_FECHA_ENVIO_BAPLIE_ZARPE")
+    private LocalDateTime anFechaEnvioBaplieZarpe;
+    
+    @Column(name = "AN_TEUS_ATRAQUE")
+    private Integer anTeusAtraque;
+    
+    @Column(name = "AN_TEUS_ZARPE")
+    private Integer anTeusZarpe;
+    
+    @Column(name = "AN_RUMBO", length = 50)
+    private String anRumbo;
+    
+    @Column(name = "AN_ETA_SPARCS")
+    private LocalDateTime anEtaSparcs;
+
+    // Custom methods that cannot be generated by Lombok
+    public Boolean getActivoAsBoolean() {
+        return activo != null && activo.equals("S");
+    }
+} 

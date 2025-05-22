@@ -21,9 +21,9 @@ class EjercicioNavesApplicationTests {
 
 	@Test
 	void testEntitiesPresent() {
-		boolean hasNaves = entityManager.getMetamodel().getEntities().stream().map(EntityType::getName).anyMatch(n -> n.equals("Naves"));
-		boolean hasLineas = entityManager.getMetamodel().getEntities().stream().map(EntityType::getName).anyMatch(n -> n.equals("Lineas"));
-		boolean hasAnunav = entityManager.getMetamodel().getEntities().stream().map(EntityType::getName).anyMatch(n -> n.equals("Anunav"));
+		boolean hasNaves = entityManager.getMetamodel().getEntities().stream().map(EntityType::getName).anyMatch(n -> n.equals("DfNave"));
+		boolean hasLineas = entityManager.getMetamodel().getEntities().stream().map(EntityType::getName).anyMatch(n -> n.equals("DfLinea"));
+		boolean hasAnunav = entityManager.getMetamodel().getEntities().stream().map(EntityType::getName).anyMatch(n -> n.equals("DfAnunav"));
 		assertThat(hasNaves).isTrue();
 		assertThat(hasLineas).isTrue();
 		assertThat(hasAnunav).isTrue();
