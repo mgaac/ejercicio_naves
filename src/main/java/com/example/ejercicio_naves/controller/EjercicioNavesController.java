@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 
 import com.example.ejercicio_naves.model.DfAnunav;
 import com.example.ejercicio_naves.service.AnunavService;
-// import com.example.ejercicio_naves.service.LineasService;
-// import com.example.ejercicio_naves.service.NavesService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class EjercicioNavesController {
-
-    // private final NavesService navesService;
-    // private final LineasService lineasService;
     private final AnunavService anunavService;
+
+    @GetMapping({"/naves/recientes"})
+    public ResponseEntity<List<DfAnunav>> getRecentAnnouncements() {
+        return ResponseEntity.ok(anunavService.getRecentAnnouncements());
+    }
 
     @GetMapping("/naves/anunciadas/atracar/hoy")
     public ResponseEntity<List<DfAnunav>> getNavesAnunciadasAtracarHoy() {
@@ -65,5 +65,10 @@ public class EjercicioNavesController {
     @GetMapping("/naves/reportar/arribo")
     public ResponseEntity<Boolean> reportarArribo(@RequestParam String uvi, @RequestParam LocalDateTime fechaArribo) {
         return ResponseEntity.ok(anunavService.reportarArribo(uvi, fechaArribo));
+    }
+
+    @GetMapping("/naves/anunciadas/uvi")
+    public ResponseEntity<DfAnunav> getShipByUvi(@RequestParam String uvi) {
+        return ResponseEntity.ok(anunavService.findByUvi(uvi));
     }
 }

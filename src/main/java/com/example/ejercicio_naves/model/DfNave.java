@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -98,6 +99,7 @@ public class DfNave {
     @Column(name = "NOMCORTO", length = 20)
     private String nomCorto;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "nave")
     private List<DfAnunav> anuncios;
 

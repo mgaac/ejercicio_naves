@@ -20,9 +20,9 @@ const inputStyle = {
 };
 
 export default function Home() {
-  const [view, setView] = useState('docked-today');
+  const [view, setView] = useState('recent');
   const [ships, setShips] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [reportUvi, setReportUvi] = useState('');
@@ -36,7 +36,11 @@ export default function Home() {
     setLoading(true);
     try {
       let data;
+      console.log('Loading ships for view:', view);
       switch (view) {
+        case 'recent':
+          data = await shipService.getRecentAnnouncements();
+          break;
         case 'docked-today':
           data = await shipService.getShipsDockedToday();
           break;
@@ -50,14 +54,23 @@ export default function Home() {
           data = await shipService.getShipsDepartingThisWeek();
           break;
         default:
+          console.warn('Unknown view type:', view);
           data = [];
       }
+      console.log('Received data:', data);
       setShips(data);
     } catch (error) {
-      console.error('Error loading ships:', error);
-      alert('Error loading ships. Please try again.');
+      console.error('Error loading ships:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        type: error instanceof TypeError ? 'TypeError' : 'Unknown',
+        toString: error.toString()
+      });
+      alert(`Error loading ships: ${error.toString()}. Please check the console for more details.`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleDateRangeSearch = async () => {
@@ -94,6 +107,7 @@ export default function Home() {
         alert(`${type === 'arrival' ? 'Arrival' : 'Departure'} reported successfully`);
         setReportUvi('');
         setReportDate('');
+        loadShips(); // Reload the current view
       } else {
         alert('Failed to report. Please try again.');
       }
@@ -110,6 +124,15 @@ export default function Home() {
       <div style={sectionStyle}>
         <h2>View Ships</h2>
         <div>
+          <button
+            onClick={() => setView('recent')}
+            style={{
+              ...buttonStyle,
+              backgroundColor: view === 'recent' ? '#eee' : 'white'
+            }}
+          >
+            Recent Announcements
+          </button>
           <button
             onClick={() => setView('docked-today')}
             style={{

@@ -2,6 +2,8 @@ package com.example.ejercicio_naves.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import lombok.RequiredArgsConstructor;
 
 import com.example.ejercicio_naves.model.DfAnunav;
@@ -16,6 +18,14 @@ import java.util.List;
 public class AnunavService {
 
     private final DfAnunavRepository anunavRepository;
+
+    public List<DfAnunav> getRecentAnnouncements() {
+        return anunavRepository.findRecentAnnouncements(PageRequest.of(0, 20));
+    }
+
+    public DfAnunav findByUvi(String uvi) {
+        return anunavRepository.findById(uvi).orElse(null);
+    }
 
     public List<DfAnunav> navesAtracarHoy() {
         LocalDateTime inicioDelDia = LocalDateTime.now().toLocalDate().atStartOfDay();
@@ -49,10 +59,11 @@ public class AnunavService {
         return anunavRepository.findNavesZarpadas(fechaInicio, fechaFin);
     }
 
-    public boolean reportarZarpe(String uvi, LocalDateTime fechaZarpe) {
+    public Boolean reportarZarpe(String uvi, LocalDateTime fechaZarpe) {
         var optionalAnunav = anunavRepository.findById(uvi);
-        if (anunavRepository.isBuqueAbierto(uvi) && 
-            optionalAnunav.isPresent()) {
+        Boolean buqueAbierto = anunavRepository.isBuqueAbierto(uvi);
+        
+        if (optionalAnunav.isPresent() && buqueAbierto != null && buqueAbierto) {
     
             DfAnunav anunav = optionalAnunav.get();
     
@@ -66,9 +77,11 @@ public class AnunavService {
         return false;
     }
 
-    public boolean reportarArribo(String uvi, LocalDateTime fechaArribo) {
+    public Boolean reportarArribo(String uvi, LocalDateTime fechaArribo) {
         var optionalAnunav = anunavRepository.findById(uvi);
-        if (optionalAnunav.isEmpty() || !anunavRepository.isBuqueAbierto(uvi)) {
+        Boolean buqueAbierto = anunavRepository.isBuqueAbierto(uvi);
+        
+        if (optionalAnunav.isEmpty() || buqueAbierto == null || !buqueAbierto) {
             return false;
         }
     

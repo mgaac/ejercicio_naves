@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import jakarta.transaction.Transactional;
@@ -17,9 +18,20 @@ import com.example.ejercicio_naves.model.DfAnunav;
 public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
 
     @Query("""
-    SELECT a
+    SELECT DISTINCT a
       FROM DfAnunav a
-      JOIN a.nave n
+      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.linea l
+     WHERE a.activo = 'S'
+     ORDER BY a.eta DESC
+    """)
+    List<DfAnunav> findRecentAnnouncements(Pageable pageable);
+
+    @Query("""
+    SELECT DISTINCT a
+      FROM DfAnunav a
+      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.linea l
      WHERE a.fecAtraq IS NULL
        AND a.eta BETWEEN :fechaInicio AND :fechaFin
      ORDER BY a.eta
@@ -30,9 +42,10 @@ public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
     );
 
     @Query("""
-    SELECT a
+    SELECT DISTINCT a
       FROM DfAnunav a
-      JOIN a.nave n
+      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.linea l
      WHERE a.fecAtraq IS NOT NULL
        AND a.fecZarpe IS NULL
      ORDER BY a.eta
@@ -40,12 +53,14 @@ public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
     List<DfAnunav> findNavesAtracadas();
 
     @Query("""
-        SELECT a
+    SELECT DISTINCT a
           FROM DfAnunav a
-          JOIN a.nave n
+      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.linea l
          WHERE a.fecAtraq IS NOT NULL
            AND a.fecZarpe IS NULL
            AND a.eta BETWEEN :fechaInicio AND :fechaFin
+     ORDER BY a.eta
         """)
     List<DfAnunav> findNavesAtracadasRango(
         @Param("fechaInicio") LocalDateTime fechaInicio,
@@ -53,9 +68,10 @@ public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
     );
 
     @Query("""
-        SELECT a
+    SELECT DISTINCT a
           FROM DfAnunav a
-          JOIN a.nave n
+      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.linea l
          WHERE a.fecAtraq  IS NOT NULL
            AND a.fecZarpe IS NOT NULL
            AND a.fecZarpe BETWEEN :fechaInicio AND :fechaFin
@@ -80,11 +96,10 @@ public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
         @Param("fecha") LocalDateTime fecha
     );
 
-
     @Query("""
     SELECT CASE WHEN a.estoper = 'A' THEN true ELSE false END
       FROM DfAnunav a
      WHERE a.uvi = :uvi
     """)
-    boolean isBuqueAbierto(@Param("uvi") String uvi);
+    Boolean isBuqueAbierto(@Param("uvi") String uvi);
 } 

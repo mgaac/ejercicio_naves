@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -64,9 +65,11 @@ public class DfLinea {
     @Column(name = "LIN_PORCENTAJE_TOLERANCIA_VGM")
     private BigDecimal linPorcentajeToleranciaVgm;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "linea")
     private List<DfNave> naves;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "linea")
     private List<DfAnunav> anuncios;
 
