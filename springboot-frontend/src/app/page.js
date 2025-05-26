@@ -1,239 +1,249 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { shipService } from '../services/shipService';
-import ShipCard from '../components/ShipCard';
+import { servicioNaves } from '../services/servicioNaves';
+import TarjetaNave from '../components/TarjetaNave';
 
-const buttonStyle = {
+const estiloBoton = {
   padding: '5px 10px',
   margin: '5px',
   border: '1px solid #ccc'
 };
 
-const sectionStyle = {
+const estiloSeccion = {
   marginBottom: '20px'
 };
 
-const inputStyle = {
+const estiloInput = {
   margin: '5px',
   padding: '5px'
 };
 
-export default function Home() {
-  const [view, setView] = useState('recent');
-  const [ships, setShips] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [reportUvi, setReportUvi] = useState('');
-  const [reportDate, setReportDate] = useState('');
+const estiloDivisor = {
+  display: 'inline-block',
+  width: '1px',
+  height: '24px',
+  margin: '0 10px',
+  backgroundColor: '#ccc',
+  verticalAlign: 'middle'
+};
+
+export default function Inicio() {
+  const [vista, setVista] = useState('recientes');
+  const [naves, setNaves] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const [uviReporte, setUviReporte] = useState('');
+  const [fechaReporte, setFechaReporte] = useState('');
 
   useEffect(() => {
-    loadShips();
-  }, [view]);
+    cargarNaves();
+  }, [vista]);
 
-  const loadShips = async () => {
-    setLoading(true);
+  const cargarNaves = async () => {
+    setCargando(true);
     try {
-      let data;
-      console.log('Loading ships for view:', view);
-      switch (view) {
-        case 'recent':
-          data = await shipService.getRecentAnnouncements();
+      let datos;
+      console.log('Cargando naves para vista:', vista);
+      switch (vista) {
+        case 'recientes':
+          datos = await servicioNaves.obtenerAnunciosRecientes();
           break;
-        case 'docked-today':
-          data = await shipService.getShipsDockedToday();
+        case 'atraque-hoy':
+          datos = await servicioNaves.obtenerNavesAtracadasHoy();
           break;
-        case 'docked-week':
-          data = await shipService.getShipsDockedThisWeek();
+        case 'atraque-semana':
+          datos = await servicioNaves.obtenerNavesAtracadasSemana();
           break;
-        case 'departing-today':
-          data = await shipService.getShipsDepartingToday();
+        case 'zarpe-hoy':
+          datos = await servicioNaves.obtenerNavesZarpandoHoy();
           break;
-        case 'departing-week':
-          data = await shipService.getShipsDepartingThisWeek();
+        case 'zarpe-semana':
+          datos = await servicioNaves.obtenerNavesZarpandoSemana();
           break;
         default:
-          console.warn('Unknown view type:', view);
-          data = [];
+          console.warn('Tipo de vista desconocido:', vista);
+          datos = [];
       }
-      console.log('Received data:', data);
-      setShips(data);
+      console.log('Datos recibidos:', datos);
+      setNaves(datos);
     } catch (error) {
-      console.error('Error loading ships:', {
+      console.error('Error al cargar naves:', {
         name: error.name,
         message: error.message,
         stack: error.stack,
-        type: error instanceof TypeError ? 'TypeError' : 'Unknown',
+        type: error instanceof TypeError ? 'TypeError' : 'Desconocido',
         toString: error.toString()
       });
-      alert(`Error loading ships: ${error.toString()}. Please check the console for more details.`);
+      alert(`Error al cargar naves: ${error.toString()}. Por favor, revise la consola para más detalles.`);
     } finally {
-      setLoading(false);
+      setCargando(false);
     }
   };
 
-  const handleDateRangeSearch = async () => {
-    if (!startDate || !endDate) {
-      alert('Please select both start and end dates');
+  const manejarBusquedaRango = async () => {
+    if (!fechaInicio || !fechaFin) {
+      alert('Por favor seleccione ambas fechas');
       return;
     }
 
-    setLoading(true);
+    setCargando(true);
     try {
-      const data = view.startsWith('docked') 
-        ? await shipService.getShipsDockedInRange(startDate, endDate)
-        : await shipService.getShipsDepartingInRange(startDate, endDate);
-      setShips(data);
+      const datos = vista.startsWith('atraque') 
+        ? await servicioNaves.obtenerNavesAtracadasRango(fechaInicio, fechaFin)
+        : await servicioNaves.obtenerNavesZarpandoRango(fechaInicio, fechaFin);
+      setNaves(datos);
     } catch (error) {
-      console.error('Error loading ships:', error);
-      alert('Error loading ships. Please try again.');
+      console.error('Error al cargar naves:', error);
+      alert('Error al cargar naves. Por favor intente nuevamente.');
     }
-    setLoading(false);
+    setCargando(false);
   };
 
-  const handleReport = async (type) => {
-    if (!reportUvi || !reportDate) {
-      alert('Please enter both UVI and date');
+  const manejarReporte = async (tipo) => {
+    if (!uviReporte || !fechaReporte) {
+      alert('Por favor ingrese tanto el UVI como la fecha');
       return;
     }
 
     try {
-      const success = type === 'arrival'
-        ? await shipService.reportArrival(reportUvi, reportDate)
-        : await shipService.reportDeparture(reportUvi, reportDate);
+      const exito = tipo === 'arribo'
+        ? await servicioNaves.reportarArribo(uviReporte, fechaReporte)
+        : await servicioNaves.reportarZarpe(uviReporte, fechaReporte);
       
-      if (success) {
-        alert(`${type === 'arrival' ? 'Arrival' : 'Departure'} reported successfully`);
-        setReportUvi('');
-        setReportDate('');
-        loadShips(); // Reload the current view
+      if (exito) {
+        alert(`${tipo === 'arribo' ? 'Arribo' : 'Zarpe'} reportado exitosamente`);
+        setUviReporte('');
+        setFechaReporte('');
+        cargarNaves();
       } else {
-        alert('Failed to report. Please try again.');
+        alert('No se pudo reportar. Por favor intente nuevamente.');
       }
     } catch (error) {
-      console.error('Error reporting:', error);
-      alert('Error reporting. Please try again.');
+      console.error('Error al reportar:', error);
+      alert('Error al reportar. Por favor intente nuevamente.');
     }
   };
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Ship Management System</h1>
+      <h1 style={{ fontWeight: 'bold', marginBottom: '15px', fontSize: '25px' }}>Sistema de Gestión de Naves</h1>
       
-      <div style={sectionStyle}>
-        <h2>View Ships</h2>
+      <div style={estiloSeccion}>
         <div>
           <button
-            onClick={() => setView('recent')}
+            onClick={() => setVista('recientes')}
             style={{
-              ...buttonStyle,
-              backgroundColor: view === 'recent' ? '#eee' : 'white'
+              ...estiloBoton,
+              backgroundColor: vista === 'recientes' ? '#eee' : 'white'
             }}
           >
-            Recent Announcements
+            Anuncios Recientes
+          </button>
+          <div style={estiloDivisor}></div>
+          <button
+            onClick={() => setVista('atraque-hoy')}
+            style={{
+              ...estiloBoton,
+              backgroundColor: vista === 'atraque-hoy' ? '#eee' : 'white'
+            }}
+          >
+            Atraques Hoy
           </button>
           <button
-            onClick={() => setView('docked-today')}
+            onClick={() => setVista('atraque-semana')}
             style={{
-              ...buttonStyle,
-              backgroundColor: view === 'docked-today' ? '#eee' : 'white'
+              ...estiloBoton,
+              backgroundColor: vista === 'atraque-semana' ? '#eee' : 'white'
             }}
           >
-            Docking Today
+            Atraques Esta Semana
+          </button>
+          <div style={estiloDivisor}></div>
+          <button
+            onClick={() => setVista('zarpe-hoy')}
+            style={{
+              ...estiloBoton,
+              backgroundColor: vista === 'zarpe-hoy' ? '#eee' : 'white'
+            }}
+          >
+            Zarpes Hoy
           </button>
           <button
-            onClick={() => setView('docked-week')}
+            onClick={() => setVista('zarpe-semana')}
             style={{
-              ...buttonStyle,
-              backgroundColor: view === 'docked-week' ? '#eee' : 'white'
+              ...estiloBoton,
+              backgroundColor: vista === 'zarpe-semana' ? '#eee' : 'white'
             }}
           >
-            Docking This Week
-          </button>
-          <button
-            onClick={() => setView('departing-today')}
-            style={{
-              ...buttonStyle,
-              backgroundColor: view === 'departing-today' ? '#eee' : 'white'
-            }}
-          >
-            Departing Today
-          </button>
-          <button
-            onClick={() => setView('departing-week')}
-            style={{
-              ...buttonStyle,
-              backgroundColor: view === 'departing-week' ? '#eee' : 'white'
-            }}
-          >
-            Departing This Week
+            Zarpes Esta Semana
           </button>
         </div>
       </div>
 
-      <div style={sectionStyle}>
-        <h2>Search by Date Range</h2>
+      <div style={estiloSeccion}>
+        <h2 style={{ fontWeight: 'bold'}}>Buscar por Rango de Fechas</h2>
         <div>
-          <label>Start Date: </label>
+          <label>Fecha Inicio: </label>
           <input
             type="datetime-local"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            style={inputStyle}
+            value={fechaInicio}
+            onChange={(e) => setFechaInicio(e.target.value)}
+            style={estiloInput}
           />
-          <label>End Date: </label>
+          <label>Fecha Fin: </label>
           <input
             type="datetime-local"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            style={inputStyle}
+            value={fechaFin}
+            onChange={(e) => setFechaFin(e.target.value)}
+            style={estiloInput}
           />
-          <button onClick={handleDateRangeSearch} style={buttonStyle}>
-            Search
+          <button onClick={manejarBusquedaRango} style={estiloBoton}>
+            Buscar
           </button>
         </div>
       </div>
 
-      <div style={sectionStyle}>
-        <h2>Report Movement</h2>
+      <div style={estiloSeccion}>
+        <h2 style={{ fontWeight: 'bold'}}>Reportar Movimiento</h2>
         <div>
           <label>UVI: </label>
           <input
             type="text"
-            value={reportUvi}
-            onChange={(e) => setReportUvi(e.target.value)}
+            value={uviReporte}
+            onChange={(e) => setUviReporte(e.target.value)}
             maxLength={5}
-            style={inputStyle}
+            style={estiloInput}
           />
-          <label>Date: </label>
+          <label>Fecha: </label>
           <input
             type="datetime-local"
-            value={reportDate}
-            onChange={(e) => setReportDate(e.target.value)}
-            style={inputStyle}
+            value={fechaReporte}
+            onChange={(e) => setFechaReporte(e.target.value)}
+            style={estiloInput}
           />
-          <button onClick={() => handleReport('arrival')} style={buttonStyle}>
-            Report Arrival
+          <button onClick={() => manejarReporte('arribo')} style={estiloBoton}>
+            Reportar Arribo
           </button>
-          <button onClick={() => handleReport('departure')} style={buttonStyle}>
-            Report Departure
+          <button onClick={() => manejarReporte('zarpe')} style={estiloBoton}>
+            Reportar Zarpe
           </button>
         </div>
       </div>
 
-      <div style={sectionStyle}>
-        <h2>Ships</h2>
-        {loading ? (
-          <p>Loading...</p>
-        ) : ships.length > 0 ? (
+      <div style={estiloSeccion}>
+        <h2 style={{ fontWeight: 'bold'}}>Naves</h2>
+        {cargando ? (
+          <p>Cargando...</p>
+        ) : naves.length > 0 ? (
           <div>
-            {ships.map((ship) => (
-              <ShipCard key={ship.uvi} ship={ship} />
+            {naves.map((nave) => (
+              <TarjetaNave key={nave.uvi} nave={nave} />
             ))}
           </div>
         ) : (
-          <p>No ships found.</p>
+          <p>No se encontraron naves.</p>
         )}
       </div>
     </div>

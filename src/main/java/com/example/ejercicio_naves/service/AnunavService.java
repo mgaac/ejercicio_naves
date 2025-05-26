@@ -24,7 +24,7 @@ public class AnunavService {
     }
 
     public DfAnunav findByUvi(String uvi) {
-        return anunavRepository.findById(uvi).orElse(null);
+        return anunavRepository.findByUviWithDetails(uvi);
     }
 
     public List<DfAnunav> navesAtracarHoy() {

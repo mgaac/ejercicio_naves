@@ -20,7 +20,7 @@ public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
     @Query("""
     SELECT DISTINCT a
       FROM DfAnunav a
-      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.nave n 
       LEFT JOIN FETCH a.linea l
      WHERE a.activo = 'S'
      ORDER BY a.eta DESC
@@ -102,4 +102,13 @@ public interface DfAnunavRepository extends JpaRepository<DfAnunav, String> {
      WHERE a.uvi = :uvi
     """)
     Boolean isBuqueAbierto(@Param("uvi") String uvi);
+
+    @Query("""
+    SELECT DISTINCT a
+      FROM DfAnunav a
+      LEFT JOIN FETCH a.nave n
+      LEFT JOIN FETCH a.linea l
+     WHERE a.uvi = :uvi
+    """)
+    DfAnunav findByUviWithDetails(@Param("uvi") String uvi);
 } 

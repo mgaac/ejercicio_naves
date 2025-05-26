@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { getShipByUvi } from '@/services/shipService';
+import { shipService } from '@/services/shipService';
 
 export default function ShipDetailPage() {
   const { uvi } = useParams();
@@ -16,8 +16,9 @@ export default function ShipDetailPage() {
 
   useEffect(() => {
     const fetchShipDetails = async () => {
+      console.log(uvi);
       try {
-        const data = await getShipByUvi(uvi);
+        const data = await shipService.getShipByUvi(uvi);
         setShip(data);
       } catch (error) {
         console.error('Error fetching ship details:', error);

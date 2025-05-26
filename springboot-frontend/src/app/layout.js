@@ -12,13 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'Ship Management System',
-  description: 'Ship tracking and management interface',
+  title: 'Sistema de Gestión de Naves',
+  description: 'Interfaz de seguimiento y gestión de naves',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" style={{ colorScheme: 'light' }}>
+    <html lang="es" style={{ colorScheme: 'light' }}>
       <body style={{ 
         backgroundColor: 'white',
         color: 'black'

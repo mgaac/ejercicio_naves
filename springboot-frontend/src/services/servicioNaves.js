@@ -1,175 +1,171 @@
 const BASE_URL = 'http://localhost:8080/api';
 
-export const shipService = {
-  // Get recent announcements
-  getRecentAnnouncements: async () => {
+export const servicioNaves = {
+  obtenerAnunciosRecientes: async () => {
     try {
       const response = await fetch(`${BASE_URL}/naves/recientes`);
       
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  // Get ships announced to dock
-  getShipsDockedToday: async () => {
+  obtenerNavesAtracadasHoy: async () => {
     try {
       const response = await fetch(`${BASE_URL}/naves/anunciadas/atracar/hoy`);
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  getShipsDockedThisWeek: async () => {
+  obtenerNavesAtracadasSemana: async () => {
     try {
       const response = await fetch(`${BASE_URL}/naves/anunciadas/atracar/semana`);
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  getShipsDockedInRange: async (startDate, endDate) => {
+  obtenerNavesAtracadasRango: async (fechaInicio, fechaFin) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/naves/anunciadas/atracar/rango?fechaInicio=${startDate}&fechaFin=${endDate}`
+        `${BASE_URL}/naves/anunciadas/atracar/rango?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
       );
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  // Get ships announced to depart
-  getShipsDepartingToday: async () => {
+  obtenerNavesZarpandoHoy: async () => {
     try {
       const response = await fetch(`${BASE_URL}/naves/anunciadas/zarpar/hoy`);
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  getShipsDepartingThisWeek: async () => {
+  obtenerNavesZarpandoSemana: async () => {
     try {
       const response = await fetch(`${BASE_URL}/naves/anunciadas/zarpar/semana`);
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  getShipsDepartingInRange: async (startDate, endDate) => {
+  obtenerNavesZarpandoRango: async (fechaInicio, fechaFin) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/naves/anunciadas/zarpar/rango?fechaInicio=${startDate}&fechaFin=${endDate}`
+        `${BASE_URL}/naves/anunciadas/zarpar/rango?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
       );
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  // Report ship movements
-  reportArrival: async (uvi, arrivalDate) => {
+  reportarArribo: async (uvi, fechaArribo) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/naves/reportar/arribo?uvi=${uvi}&fechaArribo=${arrivalDate}`
+        `${BASE_URL}/naves/reportar/arribo?uvi=${uvi}&fechaArribo=${fechaArribo}`
       );
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  reportDeparture: async (uvi, departureDate) => {
+  reportarZarpe: async (uvi, fechaZarpe) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/naves/reportar/zarpe?uvi=${uvi}&fechaZarpe=${departureDate}`
+        `${BASE_URL}/naves/reportar/zarpe?uvi=${uvi}&fechaZarpe=${fechaZarpe}`
       );
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
   },
 
-  getShipByUvi: async (uvi) => {
+  obtenerNavePorUvi: async (uvi) => {
     try {
       const response = await fetch(`${BASE_URL}/naves/anunciadas/uvi?uvi=${uvi}`);
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+        throw new Error(`Error HTTP! estado: ${response.status}, detalles: ${errorText}`);
       }
       return response.json();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Could not connect to the server. Please ensure the backend is running.');
+        throw new Error('No se pudo conectar al servidor. Por favor, asegúrese de que el backend esté funcionando.');
       }
       throw error;
     }
