@@ -18,7 +18,7 @@ const estiloContenedor = {
 };
 
 const estiloInfo = {
-  display: 'grid',44
+  display: 'grid',
   gap: '8px'
 };
 

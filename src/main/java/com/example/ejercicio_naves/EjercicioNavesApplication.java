@@ -29,22 +29,21 @@ public class EjercicioNavesApplication {
 		DfAnunavRepository anunavRepository
 	) {
 		return args -> {
-			// Create shipping lines (LINEA is CHAR(4))
+
 			DfLinea linea1 = new DfLinea();
-			linea1.setId("MSC1");  // 4 characters
+			linea1.setId("MSC1");
 			linea1.setDescripc("Mediterranean Shipping Company");
 			linea1.setActivo("S"); 
 			
 			DfLinea linea2 = new DfLinea();
-			linea2.setId("MAER");  // 4 characters
+			linea2.setId("MAER");
 			linea2.setDescripc("Maersk Line");
 			linea2.setActivo("S");
 			
 			lineaRepository.saveAll(Arrays.asList(linea1, linea2));
 			
-			// Create ships (NAVE is DEC(4))
 			DfNave nave1 = new DfNave();
-			nave1.setId(BigDecimal.valueOf(1234));  // 4 digits
+			nave1.setId(BigDecimal.valueOf(1234));
 			nave1.setDescripc("MSC PANAMA");
 			nave1.setLinea(linea1);
 			nave1.setViajes(1);
@@ -75,21 +74,20 @@ public class EjercicioNavesApplication {
 			
 			naveRepository.saveAll(Arrays.asList(nave1, nave2, nave3));
 
-			// Create ship announcements
 			LocalDateTime now = LocalDateTime.now();
 			
 			DfAnunav anunav1 = new DfAnunav();
-			anunav1.setUvi("U123");  // 4 chars
+			anunav1.setUvi("U123");
 			anunav1.setNave(nave1);
 			anunav1.setLinea(linea1);
 			anunav1.setViajes(1);
 			anunav1.setEta(now.plusDays(1));
 			anunav1.setEtd(now.plusDays(2));
-			anunav1.setEstAnun("A"); // Active
+			anunav1.setEstAnun("A");
 			anunav1.setActivo("S");
 			
 			DfAnunav anunav2 = new DfAnunav();
-			anunav2.setUvi("U456");  // 4 chars
+			anunav2.setUvi("U456");
 			anunav2.setNave(nave2);
 			anunav2.setLinea(linea2);
 			anunav2.setViajes(2);
@@ -99,7 +97,7 @@ public class EjercicioNavesApplication {
 			anunav2.setActivo("S");
 			
 			DfAnunav anunav3 = new DfAnunav();
-			anunav3.setUvi("U789");  // 4 chars
+			anunav3.setUvi("U789");
 			anunav3.setNave(nave3);
 			anunav3.setLinea(linea1);
 			anunav3.setViajes(3);
