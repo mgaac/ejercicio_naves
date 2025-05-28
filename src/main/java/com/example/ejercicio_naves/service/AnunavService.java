@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AnunavService {
+public class AnunavService implements IAnunavService {
 
     private final DfAnunavRepository anunavRepository;
 

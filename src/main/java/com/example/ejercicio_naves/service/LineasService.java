@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class LineasService {
+public class LineasService implements ILineasService {
 
 }

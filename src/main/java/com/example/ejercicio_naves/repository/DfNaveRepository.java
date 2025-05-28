@@ -9,5 +9,5 @@ import java.math.BigDecimal;
 
 @Repository
 public interface DfNaveRepository extends JpaRepository<DfNave, BigDecimal> {
-    // Custom queries can be added here if needed
+
 } 

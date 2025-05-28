@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 import com.example.ejercicio_naves.model.DfAnunav;
-import com.example.ejercicio_naves.service.AnunavService;
+import com.example.ejercicio_naves.service.IAnunavService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class EjercicioNavesController {
-    private final AnunavService anunavService;
+    private final IAnunavService anunavService;
 
     @GetMapping({"/naves/recientes"})
     public ResponseEntity<List<DfAnunav>> getRecentAnnouncements() {

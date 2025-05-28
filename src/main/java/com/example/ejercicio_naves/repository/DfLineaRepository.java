@@ -7,5 +7,5 @@ import com.example.ejercicio_naves.model.DfLinea;
 
 @Repository
 public interface DfLineaRepository extends JpaRepository<DfLinea, String> {
-    // Custom queries can be added here if needed
+
 } 

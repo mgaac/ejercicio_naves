@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class NavesService {
+public class NavesService implements INavesService {
 
 
 }
